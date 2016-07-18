@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Weavers>
-        traceConstructors="true">
-    <TraceOn class="public" method="public" />
-  </Tracer>
 
+  <Tracer adapterAssembly="Tracer.Observable"
+      logManager="Tracer.Observable.Adapters.LogManagerAdapter"
+      logger="Tracer.Observable.Adapters.LoggerAdapter"
+      staticLogger="Tracer.Log4Net.Log"
+      traceConstructors="true"
+      traceProperties="false">
+    <TraceOn class="private" method="private" />
+    <NoTrace namespace="NotTracedNamespace+*" />
+  </Tracer>
 </Weavers>

@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Reactive;
 using System.Windows;
 using ReactiveUI;
-using Tracer.Observable.Adapters;
 using TracerAttributes;
+using Tracer.Observable.Adapters;
 
 namespace ReactiveTracer.Wpf
 {
