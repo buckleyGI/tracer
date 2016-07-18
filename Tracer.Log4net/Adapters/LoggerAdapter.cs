@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -122,7 +123,7 @@ namespace Tracer.Log4Net.Adapters
 
         #endregion
 
-        #region ILog methods
+        #region ILog methods and properties
 
         public void LogDebug(string methodInfo, object message)
         {
@@ -404,6 +405,31 @@ namespace Tracer.Log4Net.Adapters
             }
         }
 
+        public bool LogIsDebugEnabled
+        {
+            get { return _logger.IsEnabledFor(Level.Debug); }
+        }
+
+        public bool LogIsInfoEnabled
+        {
+            get { return _logger.IsEnabledFor(Level.Info); }
+        }
+
+        public bool LogIsWarnEnabled
+        {
+            get { return _logger.IsEnabledFor(Level.Warn); }
+        }
+
+        public bool LogIsErrorEnabled
+        {
+            get { return _logger.IsEnabledFor(Level.Error); }
+        }
+
+        public bool LogIsFatalEnabled
+        {
+            get { return _logger.IsEnabledFor(Level.Fatal); }
+        }
+
         #endregion
 
         private void Log(Level level, string methodInfo, object message, Exception exception = null, PropertiesDictionary properties = null)
@@ -433,6 +459,13 @@ namespace Tracer.Log4Net.Adapters
             else if (message is string)
             {
                 return message as string;
+            }
+            else if (message is IEnumerator && _logger.Repository != null)
+            {
+                var retVal = _logger.Repository.RendererMap.FindAndRender(message);
+                var enumerable = message as IEnumerator;
+                enumerable.Reset();
+                return retVal;
             }
             else if (_logger.Repository != null)
             {
